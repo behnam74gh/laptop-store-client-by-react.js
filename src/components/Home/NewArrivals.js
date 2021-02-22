@@ -11,14 +11,6 @@ const NewArrivals = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    loadAllProducts();
-  }, [page]);
-
-  useEffect(() => {
-    getProductsCount().then((res) => setProductsCount(res.data));
-  }, []);
-
-  const loadAllProducts = () => {
     setLoading(true);
     getProducts("createdAt", "desc", page)
       .then((res) => {
@@ -29,7 +21,11 @@ const NewArrivals = () => {
         setLoading(false);
         console.log(err);
       });
-  };
+  }, [page]);
+
+  useEffect(() => {
+    getProductsCount().then((res) => setProductsCount(res.data));
+  }, []);
 
   return (
     <>

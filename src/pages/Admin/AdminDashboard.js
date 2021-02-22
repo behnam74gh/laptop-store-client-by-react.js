@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import AdminNav from "../../components/Nav/AdminNav";
 import { getOrders, changeStatus } from "../../functions/admin";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import Order from "../../components/Order/Order";
 
@@ -9,7 +9,6 @@ const AdminDashboard = () => {
   const [orders, setOrders] = useState([]);
 
   const { user } = useSelector((state) => ({ ...state }));
-  const dispatch = useDispatch();
 
   const loadAllOrders = useCallback(
     () =>

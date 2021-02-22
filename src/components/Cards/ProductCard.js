@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import laptop from "../../images/laptop.jpg";
 import { showAverage } from "../../functions/rating";
 import _ from "lodash";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const { Meta } = Card;
 
@@ -13,7 +13,6 @@ const ProductCard = ({ product }) => {
   const { title, description, images, slug, price } = product;
   const [tooltip, setTooltip] = useState("Click To Add");
 
-  const { user, cart } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
 
   const addToCartHandler = () => {
@@ -67,6 +66,7 @@ const ProductCard = ({ product }) => {
           </Link>,
           <Tooltip title={tooltip}>
             <a
+              href="#!"
               disabled={product.quantity < 1}
               onClick={addToCartHandler}
               style={{ userSelect: "none" }}

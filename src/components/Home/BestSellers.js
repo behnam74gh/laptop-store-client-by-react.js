@@ -11,14 +11,6 @@ const BestSellers = () => {
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    loadAllProducts();
-  }, [page]);
-
-  useEffect(() => {
-    getProductsCount().then((res) => setProductsCount(res.data));
-  }, []);
-
-  const loadAllProducts = () => {
     setLoading(true);
     getProducts("sold", "desc", page)
       .then((res) => {
@@ -29,7 +21,11 @@ const BestSellers = () => {
         setLoading(false);
         console.log(err);
       });
-  };
+  }, [page]);
+
+  useEffect(() => {
+    getProductsCount().then((res) => setProductsCount(res.data));
+  }, []);
 
   return (
     <>

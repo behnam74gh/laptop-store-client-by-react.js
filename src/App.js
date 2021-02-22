@@ -46,8 +46,8 @@ const Payment = lazy(() => import("./pages/Payment"));
 const App = () => {
   const dispatch = useDispatch();
 
-  let env = process.env.REACT_APP_API;
-  console.log("env-------------->", env);
+  // let env = process.env.REACT_APP_API;
+  // console.log("env-------------->", env);
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AdminNav from "../../../components/Nav/AdminNav";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import {
   getCoupons,
@@ -19,7 +19,6 @@ const CreateCouponPage = () => {
   const [coupons, setCoupons] = useState([]);
 
   const { user } = useSelector((state) => ({ ...state }));
-  const dispatch = useDispatch();
 
   useEffect(() => {
     getCoupons()

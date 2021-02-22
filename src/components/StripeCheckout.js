@@ -33,7 +33,7 @@ const StripeCheckout = () => {
       setTotalAfterDiscount(res.data.totalAfterDiscount);
       setPayable(res.data.payable);
     });
-  }, []);
+  }, [user.token, coupon]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
