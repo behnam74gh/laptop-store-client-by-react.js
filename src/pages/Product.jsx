@@ -35,7 +35,7 @@ const Product = ({ match }) => {
       );
       existRatingObject && setStar(existRatingObject.star);
     }
-  });
+  }, [product.ratings, user]);
 
   const onStarClick = (newRating, name) => {
     setStar(newRating);

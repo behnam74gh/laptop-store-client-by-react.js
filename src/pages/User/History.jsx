@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import UserNav from "../../components/Nav/UserNav";
 import { getUserOrders } from "../../functions/user";
-import { useSelector, useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import ShowPaymentInfo from "../../components/Cards/ShowPaymentInfo";
 import { PDFDownloadLink } from "@react-pdf/renderer";
@@ -12,7 +11,6 @@ const History = () => {
   const [orders, setOrders] = useState([]);
 
   const { user } = useSelector((state) => ({ ...state }));
-  const dispatch = useDispatch();
 
   const loadUserOrders = useCallback(
     () =>

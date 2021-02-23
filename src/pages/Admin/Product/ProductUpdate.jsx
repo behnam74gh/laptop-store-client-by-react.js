@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import ProductCreateForm from "../../../components/Forms/ProductCreateForm";
 import FileUpload from "../../../components/Forms/FileUpload";
 import AdminNav from "../../../components/Nav/AdminNav";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -37,12 +36,7 @@ const ProductUpdate = ({ match, history }) => {
   const { user } = useSelector((state) => ({ ...state }));
   const { slug } = match.params;
 
-  useEffect(() => {
-    loadProduct();
-    loadCategories();
-  }, []);
-
-  const loadProduct = () => {
+  const loadProduct = useCallback(() => {
     getProduct(slug)
       .then((p) => {
         setValues({ ...values, ...p.data });
@@ -54,7 +48,12 @@ const ProductUpdate = ({ match, history }) => {
         setArrayOfSubIds(arr);
       })
       .catch((err) => console.log(err));
-  };
+  }, [slug, values]);
+
+  useEffect(() => {
+    loadProduct();
+    loadCategories();
+  }, [loadProduct]);
 
   const loadCategories = () =>
     getCategories().then((res) => setCategories(res.data));
