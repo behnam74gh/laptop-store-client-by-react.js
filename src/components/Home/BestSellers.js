@@ -3,6 +3,7 @@ import ProductCard from "../Cards/ProductCard";
 import { getProducts, getProductsCount } from "../../functions/product";
 import LoadingCard from "../Cards/LoadingCard";
 import { Pagination } from "antd";
+import Slide from "react-reveal/Slide";
 
 const BestSellers = () => {
   const [products, setProducts] = useState([]);
@@ -35,9 +36,11 @@ const BestSellers = () => {
         ) : (
           <div className="row">
             {products.map((p) => (
-              <div className="col-md-4" key={p._id}>
-                <ProductCard product={p} />
-              </div>
+              <Slide bottom big key={p._id}>
+                <div className="col-md-4">
+                  <ProductCard product={p} />
+                </div>
+              </Slide>
             ))}
           </div>
         )}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Tabs, Tooltip } from "antd";
 import { HeartOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 import { useHistory } from "react-router-dom";
@@ -13,12 +13,16 @@ import _ from "lodash";
 import { useSelector, useDispatch } from "react-redux";
 import { addToWishlist } from "../../functions/user";
 import { toast } from "react-toastify";
+import Comments from "../Comments/Comments";
+import axios from "axios";
+import Fade from "react-reveal/Fade";
 
 const { TabPane } = Tabs;
 
 const SingleProduct = ({ product, onStarClick, star }) => {
   const { title, images, description, _id } = product;
   const [tooltip, setTooltip] = useState("Click To Add");
+  const [commentList, setCommentList] = useState([]);
 
   const { user } = useSelector((state) => ({ ...state }));
   const dispatch = useDispatch();
@@ -62,65 +66,97 @@ const SingleProduct = ({ product, onStarClick, star }) => {
     });
   };
 
+  useEffect(() => {
+    axios
+      .post(`${process.env.REACT_APP_API}/comment/getComments`, {
+        postId: _id,
+      })
+      .then((res) => {
+        // console.log(res.data);
+        if (res.data.success) {
+          setCommentList(res.data.allComments);
+        } else {
+          console.log(res.data.error);
+          alert("faild to load comments");
+        }
+      });
+  }, [_id]);
+  const updateComments = (savedComment) => {
+    setCommentList(commentList.concat(savedComment));
+  };
+
   return (
     <>
-      <div className="col-md-7">
-        {images && images.length ? (
-          <Carousel showArrows={true} autoPlay infiniteLoop>
-            {images &&
-              images.map((i) => (
-                <img src={i.url} alt={i.public_id} key={i.public_id} />
-              ))}
-          </Carousel>
-        ) : (
-          <Card
-            cover={
-              <img src={laptop} alt="noimage" className="mb-3 card-image" />
-            }
-          />
-        )}
-        <Tabs type="card">
-          <TabPane tab="Description" key="1">
-            {description}
-          </TabPane>
-          <TabPane tab="More" key="2">
-            something about product..
-          </TabPane>
-        </Tabs>
-      </div>
-      <div className="col-md-5">
-        <h1 className="p-3 bg-info">{title}</h1>
-        {product && product.ratings && product.ratings.length > 0 ? (
-          showAverage(product)
-        ) : (
-          <p className="text-center">No rating yet</p>
-        )}
-        <Card
-          actions={[
-            <Tooltip title={tooltip}>
-              <span onClick={addToCartHandler} style={{ userSelect: "none" }}>
-                <ShoppingCartOutlined className="text-success" /> <br /> Add to
-                Cart
-              </span>
-            </Tooltip>,
-            <span onClick={addToWishlistHandler} style={{ userSelect: "none" }}>
-              <HeartOutlined className="text-info" /> <br /> Add to Wishlist
-            </span>,
-            <RatingModal>
-              <StarRating
-                name={_id}
-                numberOfStars={5}
-                rating={star}
-                changeRating={onStarClick}
-                isSelectable={true}
-                starRatedColor="red"
+      <Fade>
+        <div className="col-md-7">
+          {images && images.length ? (
+            <Carousel showArrows={true} autoPlay infiniteLoop>
+              {images &&
+                images.map((i) => (
+                  <img src={i.url} alt={i.public_id} key={i.public_id} />
+                ))}
+            </Carousel>
+          ) : (
+            <Card
+              cover={
+                <img src={laptop} alt="noimage" className="mb-3 card-image" />
+              }
+            />
+          )}
+          <Tabs type="card">
+            <TabPane tab="Comments" key="1">
+              <Comments
+                commentList={commentList}
+                postId={_id}
+                refreshComments={updateComments}
               />
-            </RatingModal>,
-          ]}
-        >
-          <ProductListItems product={product} />
-        </Card>
-      </div>
+            </TabPane>
+            <TabPane tab="Description" key="2">
+              {description}
+            </TabPane>
+          </Tabs>
+        </div>
+        <div className="col-md-5">
+          <h1 className="p-3 bg-info">
+            <Fade right cascade>
+              {title}
+            </Fade>
+          </h1>
+          {product && product.ratings && product.ratings.length > 0 ? (
+            showAverage(product)
+          ) : (
+            <p className="text-center">No rating yet</p>
+          )}
+          <Card
+            actions={[
+              <Tooltip title={tooltip}>
+                <span onClick={addToCartHandler} style={{ userSelect: "none" }}>
+                  <ShoppingCartOutlined className="text-success" /> <br /> Add
+                  to Cart
+                </span>
+              </Tooltip>,
+              <span
+                onClick={addToWishlistHandler}
+                style={{ userSelect: "none" }}
+              >
+                <HeartOutlined className="text-info" /> <br /> Add to Wishlist
+              </span>,
+              <RatingModal>
+                <StarRating
+                  name={_id}
+                  numberOfStars={5}
+                  rating={star}
+                  changeRating={onStarClick}
+                  isSelectable={true}
+                  starRatedColor="red"
+                />
+              </RatingModal>,
+            ]}
+          >
+            <ProductListItems product={product} />
+          </Card>
+        </div>
+      </Fade>
     </>
   );
 };

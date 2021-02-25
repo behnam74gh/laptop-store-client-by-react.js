@@ -4,6 +4,7 @@ import SingleProduct from "../components/Cards/SingleProduct";
 import { getProduct, productStar } from "../functions/product";
 import { getRelated } from "../functions/product";
 import ProductCard from "../components/Cards/ProductCard";
+import Fade from "react-reveal/Fade";
 
 const Product = ({ match }) => {
   const [product, setProduct] = useState({});
@@ -66,10 +67,12 @@ const Product = ({ match }) => {
       </div>
       <div className="row pb-5">
         {related.length ? (
-          related.map((r) => (
-            <div className="col-md-4" key={r._id}>
-              <ProductCard product={r} />
-            </div>
+          related.map((r, i) => (
+            <Fade key={i} bottom>
+              <div className="col-md-4">
+                <ProductCard product={r} />
+              </div>
+            </Fade>
           ))
         ) : (
           <div className="col text-center">No Products Found</div>

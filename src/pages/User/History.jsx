@@ -15,7 +15,7 @@ const History = () => {
   const loadUserOrders = useCallback(
     () =>
       getUserOrders(user.token).then((res) => {
-        console.log(res);
+        // console.log(res);
         setOrders(res.data);
       }),
     [user.token]
@@ -82,12 +82,12 @@ const History = () => {
     ));
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5" style={{ minHeight: "100vh" }}>
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-2 mt-4">
           <UserNav />
         </div>
-        <div className="col-md-10 text-center">
+        <div className="col-10 mt-4 text-center">
           <h4>
             {orders.length > 1 ? "user purchase Orders" : "No purchase orders"}
           </h4>

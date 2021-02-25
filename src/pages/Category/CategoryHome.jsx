@@ -20,7 +20,7 @@ const CategoryHome = ({ match }) => {
   }, [slug]);
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5">
       <div className="row">
         <div className="col">
           {loading ? (
@@ -34,7 +34,7 @@ const CategoryHome = ({ match }) => {
           )}
         </div>
       </div>
-      <div className="row px-5">
+      <div className="row px-5" style={{ minHeight: "100vh" }}>
         {products.map((p) => (
           <div key={p._id} className="col-md-4">
             <ProductCard product={p} />

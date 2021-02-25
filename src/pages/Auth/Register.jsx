@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { auth } from "../../firebase.js";
 import { toast } from "react-toastify";
+import axios from "axios";
 import { useSelector } from "react-redux";
+import Fade from "react-reveal/Fade";
 
 const Register = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -16,16 +17,21 @@ const Register = ({ history }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const config = {
-      url: "http://localhost:3000/register/complete",
-      handleCodeInApp: true,
-    };
-    await auth.sendSignInLinkToEmail(email, config);
-    toast.success(
-      `Email is sent to ${email}. Click to link to complete your registration`
-    );
-    window.localStorage.setItem("emailForRegistration", email);
-    setEmail("");
+    axios
+      .post(`${process.env.REACT_APP_API}/register`, { email })
+      .then((res) => {
+        // console.log(res);
+        if (res.data.success) {
+          toast.success(res.data.message);
+          localStorage.setItem("emailForRegistration", email);
+          setEmail("");
+        } else {
+          toast.error(res.data.errorMessage);
+        }
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
   };
 
   const registerForm = (
@@ -46,10 +52,12 @@ const Register = ({ history }) => {
   return (
     <div className="container p-5">
       <div className="row">
-        <div className="col-md-6 offset-md-3">
-          <h4>Register</h4>
-          {registerForm}
-        </div>
+        <Fade bottom>
+          <div className="col-md-6 offset-md-3">
+            <h4>Register</h4>
+            {registerForm}
+          </div>
+        </Fade>
       </div>
     </div>
   );

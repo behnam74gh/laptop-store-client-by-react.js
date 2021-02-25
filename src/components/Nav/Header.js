@@ -10,7 +10,6 @@ import {
   ShoppingCartOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-import firebase from "firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Search from "../Forms/Search";
@@ -30,7 +29,6 @@ const Header = () => {
   };
 
   const logoutHandler = () => {
-    firebase.auth().signOut();
     dispatch({
       type: "LOGOUT",
       payload: null,
@@ -39,7 +37,12 @@ const Header = () => {
   };
 
   return (
-    <Menu onClick={handleClick} selectedKeys={[current]} mode="horizontal">
+    <Menu
+      onClick={handleClick}
+      selectedKeys={[current]}
+      mode="horizontal"
+      className="fixed-top"
+    >
       <Item key="home" icon={<AppstoreOutlined />}>
         <Link to="/">Home</Link>
       </Item>
@@ -71,7 +74,7 @@ const Header = () => {
       {user && (
         <SubMenu
           icon={<SettingOutlined />}
-          title={user.email && user.email.split("@")[0]}
+          title={user.name}
           className="float-right"
         >
           {user && user.role === "subscriber" && (

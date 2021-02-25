@@ -41,7 +41,7 @@ export const productStar = async (productId, star, authtoken) =>
     { star },
     {
       headers: {
-        authtoken,
+        authtoken: `bearer ${authtoken}`,
       },
     }
   );

@@ -1,16 +1,14 @@
-import React, { useEffect, lazy, Suspense } from "react";
+import React, { lazy, Suspense, useEffect } from "react";
 import { Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useDispatch } from "react-redux";
-import { auth } from "./firebase";
-import { currentUser } from "./functions/auth";
-import { LoadingOutlined } from "@ant-design/icons";
-
 import SideDrawer from "./components/Drawer/SideDrawer";
 import Header from "./components/Nav/Header";
 import UserRoute from "./components/Routes/UserRoute";
 import AdminRoute from "./components/Routes/AdminRoute";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import Footer from "./components/Footer/Footer";
 //lazy
 const Login = lazy(() => import("./pages/Auth/Login"));
 const Register = lazy(() => import("./pages/Auth/Register"));
@@ -43,46 +41,27 @@ const CreateCouponPage = lazy(() =>
 );
 const Payment = lazy(() => import("./pages/Payment"));
 
-const App = () => {
-  const dispatch = useDispatch();
-
-  // let env = process.env.REACT_APP_API;
-  // console.log("env-------------->", env);
+const LazyLoad = () => {
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const idTokenResult = await user.getIdTokenResult();
-        currentUser(idTokenResult.token)
-          .then((res) => {
-            // console.log(res);
-            dispatch({
-              type: "LOGGED_IN_USER",
-              payload: {
-                name: res.data.name,
-                email: res.data.email,
-                token: idTokenResult.token,
-                role: res.data.role,
-                _id: res.data._id,
-              },
-            });
-          })
-          .catch((err) => console.log(err));
-      }
+    NProgress.configure({
+      showSpinner: false,
+      easing: "linear",
+      speed: 1800,
     });
 
-    return () => unsubscribe();
-  }, [dispatch]);
+    NProgress.start();
 
+    return () => {
+      NProgress.done();
+    };
+  });
+
+  return "";
+};
+
+const App = () => {
   return (
-    <Suspense
-      fallback={
-        <div className="col text-center p-5">
-          __React Redux EC
-          <LoadingOutlined />
-          MMERCE__
-        </div>
-      }
-    >
+    <Suspense fallback={<LazyLoad />}>
       <Header />
       <SideDrawer />
       <ToastContainer />
@@ -120,6 +99,7 @@ const App = () => {
         <AdminRoute path="/admin/coupon" exact component={CreateCouponPage} />
         <UserRoute path="/payment" exact component={Payment} />
       </Switch>
+      <Footer />
     </Suspense>
   );
 };

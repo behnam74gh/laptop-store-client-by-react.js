@@ -15,6 +15,7 @@ import ProductCard from "../components/Cards/ProductCard";
 import { Menu, Slider, Checkbox, Radio } from "antd";
 import Star from "../components/Forms/Star";
 import { getSubs } from "../functions/sub";
+import Fade from "react-reveal/Fade";
 
 const { SubMenu } = Menu;
 
@@ -292,128 +293,143 @@ const Shop = () => {
 
   return (
     <div className="container-fluid">
-      <div className="row">
-        <div className="col-md-3 pt-2">
-          <h4>Search/Filter</h4>
-          <hr />
-          <Menu
-            mode="inline"
-            defaultOpenKeys={["1", "2", "3", "4", "5", "6", "7"]}
-          >
-            {/* Price */}
-            <SubMenu
-              key="1"
-              title={
-                <span className="h6">
-                  <DollarOutlined />
-                  Price
-                </span>
-              }
+      <div className="row" style={{ minHeight: "100vh" }}>
+        <Fade bottom big>
+          <div className="col-lg-3 col-md-4 col-sm-5 mt-5 pt-4">
+            <h4>Search/Filter</h4>
+            <hr />
+            <Menu
+              mode="inline"
+              defaultOpenKeys={["1", "2", "3", "4", "5", "6", "7"]}
             >
-              <div>
-                <Slider
-                  className="mx-4"
-                  range
-                  tipFormatter={(v) => `$${v}`}
-                  value={price}
-                  onChange={sliderHandler}
-                  max="4999"
-                />
-              </div>
-            </SubMenu>
-            {/* Category */}
-            <SubMenu
-              key="2"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined />
-                  Category
-                </span>
-              }
-            >
-              <div>{showCategories()}</div>
-            </SubMenu>
+              {/* Price */}
+              <SubMenu
+                key="1"
+                title={
+                  <span className="h6">
+                    <DollarOutlined />
+                    Price
+                  </span>
+                }
+              >
+                <div>
+                  <Slider
+                    className="mx-4"
+                    range
+                    tipFormatter={(v) => `$${v}`}
+                    value={price}
+                    onChange={sliderHandler}
+                    max="4999"
+                  />
+                </div>
+              </SubMenu>
+              {/* Category */}
+              <SubMenu
+                key="2"
+                title={
+                  <span className="h6">
+                    <DownSquareOutlined />
+                    Category
+                  </span>
+                }
+              >
+                <div>{showCategories()}</div>
+              </SubMenu>
 
-            {/* Rating */}
-            <SubMenu
-              key="3"
-              title={
-                <span className="h6">
-                  <StarOutlined />
-                  Ratings
-                </span>
-              }
-            >
-              <div>{showStars()}</div>
-            </SubMenu>
+              {/* Rating */}
+              <SubMenu
+                key="3"
+                title={
+                  <span className="h6">
+                    <StarOutlined />
+                    Ratings
+                  </span>
+                }
+              >
+                <div>{showStars()}</div>
+              </SubMenu>
 
-            {/* Sub Categories */}
-            <SubMenu
-              key="4"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined />
-                  Sub Categories
-                </span>
-              }
-            >
-              <div className="row px-4">{showSubs()}</div>
-            </SubMenu>
+              {/* Sub Categories */}
+              <SubMenu
+                key="4"
+                title={
+                  <span className="h6">
+                    <DownSquareOutlined />
+                    Sub Categories
+                  </span>
+                }
+              >
+                <div className="row px-4">{showSubs()}</div>
+              </SubMenu>
 
-            {/* Brands */}
-            <SubMenu
-              key="5"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined />
-                  Brands
-                </span>
-              }
-            >
-              <div className="row px-4">{showBrands()}</div>
-            </SubMenu>
+              {/* Brands */}
+              <SubMenu
+                key="5"
+                title={
+                  <span className="h6">
+                    <DownSquareOutlined />
+                    Brands
+                  </span>
+                }
+              >
+                <div className="row px-4">{showBrands()}</div>
+              </SubMenu>
 
-            {/* Colors */}
-            <SubMenu
-              key="6"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined />
-                  Colors
-                </span>
-              }
-            >
-              <div className="row px-4">{showColors()}</div>
-            </SubMenu>
+              {/* Colors */}
+              <SubMenu
+                key="6"
+                title={
+                  <span className="h6">
+                    <DownSquareOutlined />
+                    Colors
+                  </span>
+                }
+              >
+                <div className="row px-4">{showColors()}</div>
+              </SubMenu>
 
-            {/* Shipping */}
-            <SubMenu
-              key="7"
-              title={
-                <span className="h6">
-                  <DownSquareOutlined />
-                  Shipping
-                </span>
-              }
-            >
-              {showShipping()}
-            </SubMenu>
-          </Menu>
-        </div>
-        <div className="col-md-9 pt-2">
-          {loading ? (
-            <LoadingOutlined className="text-danger h1" />
-          ) : (
-            <h4 className="text-danger">Products</h4>
-          )}
+              {/* Shipping */}
+              <SubMenu
+                key="7"
+                title={
+                  <span className="h6">
+                    <DownSquareOutlined />
+                    Shipping
+                  </span>
+                }
+              >
+                {showShipping()}
+              </SubMenu>
+            </Menu>
+          </div>
+        </Fade>
+        <div className="col-lg-9 col-md-8 mt-5 col-sm-7 pt-4">
+          <div>
+            {loading ? (
+              <LoadingOutlined className="text-danger h1" />
+            ) : (
+              <h4 className="text-danger">
+                <Fade right big cascade>
+                  Products
+                </Fade>
+              </h4>
+            )}
 
-          {products.length < 1 && <p>No Products Found</p>}
-
+            {products.length < 1 && (
+              <h6>
+                <Fade bottom big cascade>
+                  No Products Found
+                </Fade>
+              </h6>
+            )}
+          </div>
           <div className="row pb-5">
             {products.map((p) => (
-              <div className="col-md-4 my-2" key={p._id}>
-                <ProductCard product={p} />
-              </div>
+              <Fade big key={p._id}>
+                <div className="col-lg-4 col-md-6 my-2">
+                  <ProductCard product={p} />
+                </div>
+              </Fade>
             ))}
           </div>
         </div>

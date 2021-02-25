@@ -13,7 +13,7 @@ const AdminDashboard = () => {
   const loadAllOrders = useCallback(
     () =>
       getOrders(user.token).then((res) => {
-        console.log(res);
+        // console.log(res);
         setOrders(res.data);
       }),
     [user]
@@ -31,12 +31,12 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5">
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-sm-2 mt-4 pl-md-5 pl-3 pr-0">
           <AdminNav />
         </div>
-        <div className="col-md-10">
+        <div className="col-sm-10 mt-4">
           <h4>Admin Dashboard page</h4>
           {/*{JSON.stringify(orders)}*/}
           <Order orders={orders} changeStatusHandler={changeStatusHandler} />

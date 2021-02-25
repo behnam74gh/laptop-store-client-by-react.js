@@ -100,12 +100,12 @@ const ProductUpdate = ({ match, history }) => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid vh-100 mt-5">
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-sm-2 mt-4 pl-md-5 pl-3 pr-0">
           <AdminNav />
         </div>
-        <div className="col-md-10">
+        <div className="col-sm-10 mt-4">
           {loading ? (
             <LoadingOutlined className="text-danger h1" />
           ) : (

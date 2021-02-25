@@ -44,12 +44,12 @@ const AllProducts = () => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5" style={{ minHeight: "100vh" }}>
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-sm-2 mt-4 pl-md-5 pl-3 pr-0">
           <AdminNav />
         </div>
-        <div className="col-md-10">
+        <div className="col-sm-10 mt-4">
           {loading ? (
             <h4 className="text-danger">Loading..</h4>
           ) : (
@@ -57,7 +57,7 @@ const AllProducts = () => {
           )}
           <div className="row">
             {products.map((p) => (
-              <div className="col-md-4" key={p._id}>
+              <div className="col-md-4 col-sm-6" key={p._id}>
                 <AdminProductCard
                   product={p}
                   removeProductHandler={removeProductHandler}

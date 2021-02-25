@@ -4,7 +4,7 @@ import ShowPaymentInfo from "../Cards/ShowPaymentInfo";
 
 const Order = ({ orders, changeStatusHandler }) => {
   const showOrderInTable = (order) => (
-    <table className="table table-bordered">
+    <table className="table table-bordered table-responsive">
       <thead className="thead-light">
         <tr>
           <th scope="col">Title</th>
@@ -41,7 +41,7 @@ const Order = ({ orders, changeStatusHandler }) => {
   return (
     <React.Fragment>
       {orders.map((order) => (
-        <div key={order._id} className="row pb-5">
+        <div key={order._id} className="pb-5">
           <div className="btn btn-block bg-light">
             <ShowPaymentInfo order={order} showStatus={false} />
             <div className="row mb-4">

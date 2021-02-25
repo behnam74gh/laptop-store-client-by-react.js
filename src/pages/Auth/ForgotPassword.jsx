@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "../../firebase.js";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 
 const ForgotPassword = ({ history }) => {
@@ -18,24 +17,7 @@ const ForgotPassword = ({ history }) => {
   const submitHandler = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    const config = {
-      url: "http://localhost:3000/login",
-      handleCodeInApp: true,
-    };
-
-    await auth
-      .sendPasswordResetEmail(email, config)
-      .then(() => {
-        setEmail("");
-        setLoading(false);
-        toast.success("Check your email for password reset link");
-      })
-      .catch((err) => {
-        toast.error(err.message);
-        setLoading(false);
-        console.log("Error message in forgot password", err);
-      });
+    //
   };
 
   return (

@@ -38,7 +38,7 @@ const Cart = ({ history }) => {
   };
 
   const showCartItems = () => (
-    <table className="table table-bordered">
+    <table className="table table-bordered table-responsive">
       <thead className="thead-light">
         <tr>
           <th scope="col">Image</th>
@@ -58,7 +58,7 @@ const Cart = ({ history }) => {
   );
 
   return (
-    <div className="container-fluid pt-2">
+    <div className="container-fluid mt-5 pt-2" style={{ minHeight: "100vh" }}>
       <div className="row">
         <div className="col-md-8">
           <h4>Cart / {cart.length} Product</h4>

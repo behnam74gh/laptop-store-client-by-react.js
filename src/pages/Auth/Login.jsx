@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { auth, googleAuthProvider } from "../../firebase.js";
 import { toast } from "react-toastify";
 import { Button } from "antd";
 import { MailOutlined, GoogleOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { createOrUpdateUser } from "../../functions/auth";
+import axios from "axios";
+import Fade from "react-reveal/Fade";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
@@ -42,28 +42,28 @@ const Login = ({ history }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const result = await auth.signInWithEmailAndPassword(email, password);
-      const { user } = result;
-      const idTokenResult = await user.getIdTokenResult();
-
-      createOrUpdateUser(idTokenResult.token)
+      axios
+        .post(`${process.env.REACT_APP_API}/login`, { email, password })
         .then((res) => {
-          // console.log(res);
-          dispatch({
-            type: "LOGGED_IN_USER",
-            payload: {
-              name: res.data.name,
-              email: res.data.email,
-              token: idTokenResult.token,
-              role: res.data.role,
-              _id: res.data._id,
-            },
-          });
-          roleBasedRedirect(res);
-        })
-        .catch((err) => console.log(err));
+          if (res.data.success) {
+            dispatch({
+              type: "LOGGED_IN_USER",
+              payload: {
+                name: res.data.name,
+                email: res.data.email,
+                token: res.data.token,
+                role: res.data.role,
+                _id: res.data._id,
+              },
+            });
+            roleBasedRedirect(res);
+          } else {
+            console.log("------>", res.data);
+            toast.error(res.data.errorMessage);
+          }
+        });
     } catch (error) {
-      console.log(error);
+      console.log("====>", error);
       toast.error(error.message);
       setLoading(false);
     }
@@ -108,55 +108,57 @@ const Login = ({ history }) => {
   );
 
   const googleLogin = () => {
-    auth
-      .signInWithPopup(googleAuthProvider)
-      .then(async (result) => {
-        const { user } = result;
-        const idTokenResult = await user.getIdTokenResult();
-        createOrUpdateUser(idTokenResult.token).then((res) => {
-          dispatch({
-            type: "LOGGED_IN_USER",
-            payload: {
-              name: res.data.name,
-              email: res.data.email,
-              token: idTokenResult.token,
-              role: res.data.role,
-              _id: res.data._id,
-            },
-          });
-          roleBasedRedirect(res);
-        });
-      })
-      .catch((err) => {
-        console.log(err);
-        toast.error(err.message);
-      });
+    // auth
+    //   .signInWithPopup(googleAuthProvider)
+    //   .then(async (result) => {
+    //     const { user } = result;
+    //     const idTokenResult = await user.getIdTokenResult();
+    //     createOrUpdateUser(idTokenResult.token).then((res) => {
+    //       dispatch({
+    //         type: "LOGGED_IN_USER",
+    //         payload: {
+    //           name: res.data.name,
+    //           email: res.data.email,
+    //           token: idTokenResult.token,
+    //           role: res.data.role,
+    //           _id: res.data._id,
+    //         },
+    //       });
+    //       roleBasedRedirect(res);
+    //     });
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //     toast.error(err.message);
+    //   });
   };
 
   return (
     <div className="container p-5">
       <div className="row">
-        <div className="col-md-6 offset-md-3">
-          {loading ? (
-            <h4 className="text-danger">Loading ...</h4>
-          ) : (
-            <h4>Login</h4>
-          )}
-          {loginForm}
-          <Button
-            icon={<GoogleOutlined />}
-            onClick={googleLogin}
-            type="danger"
-            block
-            shape="round"
-            size="large"
-          >
-            Login with google
-          </Button>
-          <Link to="/forgot/password" className="float-left text-danger mt-3">
-            Forgot Password ?
-          </Link>
-        </div>
+        <Fade left>
+          <div className="col-md-6 offset-md-3">
+            {loading ? (
+              <h4 className="text-danger">Loading ...</h4>
+            ) : (
+              <h4>Login</h4>
+            )}
+            {loginForm}
+            <Button
+              icon={<GoogleOutlined />}
+              onClick={googleLogin}
+              type="danger"
+              block
+              shape="round"
+              size="large"
+            >
+              Login with google
+            </Button>
+            <Link to="/forgot/password" className="float-left text-danger mt-3">
+              Forgot Password ?
+            </Link>
+          </div>
+        </Fade>
       </div>
     </div>
   );

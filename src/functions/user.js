@@ -42,18 +42,18 @@ export const createOrder = async (stripeResponse, authtoken) =>
     `${process.env.REACT_APP_API}/user/order`,
     { stripeResponse },
     {
-      headers: { authtoken },
+      headers: { authtoken: `bearer ${authtoken}` },
     }
   );
 
 export const getUserOrders = async (authtoken) =>
   await axios.get(`${process.env.REACT_APP_API}/user/orders`, {
-    headers: { authtoken },
+    headers: { authtoken: `bearer ${authtoken}` },
   });
 
 export const getWishlist = async (authtoken) =>
   await axios.get(`${process.env.REACT_APP_API}/user/wishlist`, {
-    headers: { authtoken },
+    headers: { authtoken: `bearer ${authtoken}` },
   });
 
 export const removeWishlist = async (productId, authtoken) =>
@@ -61,7 +61,7 @@ export const removeWishlist = async (productId, authtoken) =>
     `${process.env.REACT_APP_API}/user/wishlist/${productId}`,
     {},
     {
-      headers: { authtoken },
+      headers: { authtoken: `bearer ${authtoken}` },
     }
   );
 
@@ -70,7 +70,7 @@ export const addToWishlist = async (productId, authtoken) =>
     `${process.env.REACT_APP_API}/user/wishlist`,
     { productId },
     {
-      headers: { authtoken },
+      headers: { authtoken: `bearer ${authtoken}` },
     }
   );
 
@@ -79,6 +79,6 @@ export const createCashOrderForUser = async (authtoken, COD, coupon) =>
     `${process.env.REACT_APP_API}/user/cash-order`,
     { COD, couponApplied: coupon },
     {
-      headers: { authtoken },
+      headers: { authtoken: `bearer ${authtoken}` },
     }
   );

@@ -12,6 +12,7 @@ const SubUpdate = ({ match, history }) => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [parent, setParent] = useState("");
+  const [selectedParent, setSelectedParent] = useState("");
 
   const { user } = useSelector((state) => ({ ...state }));
 
@@ -23,8 +24,9 @@ const SubUpdate = ({ match, history }) => {
   const loadSub = useCallback(
     () =>
       getSub(match.params.slug).then((s) => {
-        setName(s.data.name);
-        setParent(s.data.parent);
+        // console.log(s.data);
+        setName(s.data.sub.name);
+        setParent(s.data.sub.parent);
       }),
     [match.params.slug]
   );
@@ -50,12 +52,12 @@ const SubUpdate = ({ match, history }) => {
   };
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5" style={{ minHeight: "100vh" }}>
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-sm-2 mt-4 pl-md-5 pl-3 pr-0">
           <AdminNav />
         </div>
-        <div className="col">
+        <div className="col-sm-10 mt-4">
           {loading ? (
             <h4 className="text-danger">Loading ...</h4>
           ) : (
@@ -68,12 +70,13 @@ const SubUpdate = ({ match, history }) => {
               name="category"
               id="category"
               className="form-control"
+              value={parent}
               onChange={(e) => setParent(e.target.value)}
             >
               <option>Please select</option>
               {categories.length > 0 &&
                 categories.map((c) => (
-                  <option key={c._id} value={c._id} selected={c._id === parent}>
+                  <option key={c._id} value={c._id}>
                     {c.name}
                   </option>
                 ))}

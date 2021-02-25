@@ -33,3 +33,9 @@ select:active {
   height: 450px;
   object-fit: cover;
 }
+
+@media screen and (max-width: 600px) {
+  .typeWriter {
+    font-size: 30px !important;
+  }
+}

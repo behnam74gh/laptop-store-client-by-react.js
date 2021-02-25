@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { auth } from "../../firebase.js";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
-import { createOrUpdateUser } from "../../functions/auth";
+import axios from "axios";
 
 const RegisterComplete = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (!localStorage.getItem("emailForRegistration")) {
+      history.push("/");
+    }
     setEmail(localStorage.getItem("emailForRegistration"));
-  }, []);
+  }, [email, history]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,35 +31,30 @@ const RegisterComplete = ({ history }) => {
     }
 
     try {
-      const result = await auth.signInWithEmailLink(
-        email,
-        window.location.href
-      );
-      if (result.user.emailVerified) {
-        localStorage.removeItem("emailForRegistration");
-        let user = auth.currentUser;
-        await user.updatePassword(password);
-        const idTokenResult = await user.getIdTokenResult();
-        //store redux
-
-        createOrUpdateUser(idTokenResult.token)
-          .then((res) => {
-            console.log(res);
+      axios
+        .post(`${process.env.REACT_APP_API}/registerComplete`, {
+          email,
+          password,
+          name,
+        })
+        .then((res) => {
+          if (res.data.success) {
             dispatch({
               type: "LOGGED_IN_USER",
               payload: {
                 name: res.data.name,
                 email: res.data.email,
-                token: idTokenResult.token,
+                token: res.data.token,
                 role: res.data.role,
                 _id: res.data._id,
               },
             });
-          })
-          .catch((err) => console.log(err));
-
-        history.push("/");
-      }
+            localStorage.removeItem("emailForRegistration");
+            history.push("/");
+          } else {
+            toast.error(res.data.errorMessage);
+          }
+        });
     } catch (error) {
       console.log(error);
       toast.error(error.message);
@@ -72,6 +70,15 @@ const RegisterComplete = ({ history }) => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           disabled
+        />
+      </div>
+      <div className="form-group">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Enter name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
         />
       </div>
       <div className="form-group">

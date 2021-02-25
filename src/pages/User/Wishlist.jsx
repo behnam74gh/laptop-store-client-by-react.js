@@ -27,12 +27,12 @@ const Wishlist = () => {
     removeWishlist(productId, user.token).then((res) => loadWishlist());
 
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5" style={{ minHeight: "100vh" }}>
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-2 mt-4">
           <UserNav />
         </div>
-        <div className="col-md-10">
+        <div className="col-10 mt-4">
           <h4>Wishlist</h4>
           {wishlist.map((p) => (
             <div key={p._id} className="alert alert-secondary">
