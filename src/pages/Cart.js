@@ -58,7 +58,7 @@ const Cart = ({ history }) => {
   );
 
   return (
-    <div className="container-fluid mt-5 pt-2" style={{ minHeight: "100vh" }}>
+    <div className="container-fluid mt-5 pt-5" style={{ minHeight: "100vh" }}>
       <div className="row">
         <div className="col-md-8">
           <h4>Cart / {cart.length} Product</h4>

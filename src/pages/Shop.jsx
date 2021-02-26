@@ -44,6 +44,7 @@ const Shop = () => {
     getSubs().then((res) => setSubs(res.data));
   }, []);
 
+  //the base function
   const fetchProducts = (arg) =>
     fetchProductsByFilter(arg).then((res) => {
       setProducts(res.data);

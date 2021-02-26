@@ -99,8 +99,8 @@ const RegisterComplete = ({ history }) => {
   );
 
   return (
-    <div className="container p-5">
-      <div className="row">
+    <div className="container pt-5 mt-5" style={{ minHeight: "100vh" }}>
+      <div className="row mt-4">
         <div className="col-md-6 offset-md-3">
           <h4>Register Complete</h4>
           {CompleteRegisterationForm}

@@ -21,7 +21,10 @@ const ForgotPassword = ({ history }) => {
   };
 
   return (
-    <div className="container col-6 offset-col-3 mt-5 pt-5">
+    <div
+      className="container col-6 offset-col-3 mt-5 pt-5"
+      style={{ minHeight: "100vh" }}
+    >
       {loading ? (
         <h4 className="mb-4">Loading ...</h4>
       ) : (

@@ -156,7 +156,7 @@ const Checkout = ({ history }) => {
     </>
   );
   return (
-    <div className="container-fluid">
+    <div className="container-fluid mt-5 pt-5" style={{ minHeight: "100vh" }}>
       <div className="row">
         <div className="col-md-6">
           <h4>Delivery Access</h4>

@@ -134,10 +134,10 @@ const Login = ({ history }) => {
   };
 
   return (
-    <div className="container p-5">
-      <div className="row">
+    <div className="container mt-5 pt-5" style={{ minHeight: "100vh" }}>
+      <div className="row mt-4">
         <Fade left>
-          <div className="col-md-6 offset-md-3">
+          <div className="col-6 offset-3">
             {loading ? (
               <h4 className="text-danger">Loading ...</h4>
             ) : (

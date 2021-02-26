@@ -11,7 +11,10 @@ const promise = loadStripe(
 
 const Payment = () => {
   return (
-    <div className="container text-center p-5">
+    <div
+      className="container text-center pt-5 mt-5"
+      style={{ minHeight: "100vh" }}
+    >
       <h4>complete your purchase</h4>
       <Elements stripe={promise}>
         <div className="col-md-8 offset-md-2">

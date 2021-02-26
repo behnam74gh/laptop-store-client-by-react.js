@@ -50,8 +50,8 @@ const Register = ({ history }) => {
   );
 
   return (
-    <div className="container p-5">
-      <div className="row">
+    <div className="container mt-5 pt-5" style={{ minHeight: "100vh" }}>
+      <div className="row mt-4">
         <Fade bottom>
           <div className="col-md-6 offset-md-3">
             <h4>Register</h4>

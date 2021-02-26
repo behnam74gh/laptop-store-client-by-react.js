@@ -3,7 +3,7 @@ import axios from "axios";
 export const createProduct = async (product, authtoken) =>
   await axios.post(`${process.env.REACT_APP_API}/product`, product, {
     headers: {
-      authtoken,
+      authtoken: `bearer ${authtoken}`,
     },
   });
 
@@ -12,7 +12,7 @@ export const getProductsByCount = (count) =>
 
 export const removeProduct = (slug, authtoken) =>
   axios.delete(`${process.env.REACT_APP_API}/product/${slug}`, {
-    headers: { authtoken },
+    headers: { authtoken: `bearer ${authtoken}` },
   });
 
 export const getProduct = (slug) =>
@@ -21,7 +21,7 @@ export const getProduct = (slug) =>
 export const updateProduct = async (slug, product, authtoken) =>
   await axios.put(`${process.env.REACT_APP_API}/product/${slug}`, product, {
     headers: {
-      authtoken,
+      authtoken: `bearer ${authtoken}`,
     },
   });
 
