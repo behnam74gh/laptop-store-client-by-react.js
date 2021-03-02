@@ -6,11 +6,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import Fade from "react-reveal/Fade";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [expired, setExpired] = useState(true);
+
+  const SITE_KEY = "6LcsLmwaAAAAAC4STevKpntx2mfuK5gu07avo5is";
 
   const dispatch = useDispatch();
 
@@ -42,26 +46,30 @@ const Login = ({ history }) => {
     e.preventDefault();
     setLoading(true);
     try {
-      axios
-        .post(`${process.env.REACT_APP_API}/login`, { email, password })
-        .then((res) => {
-          if (res.data.success) {
-            dispatch({
-              type: "LOGGED_IN_USER",
-              payload: {
-                name: res.data.name,
-                email: res.data.email,
-                token: res.data.token,
-                role: res.data.role,
-                _id: res.data._id,
-              },
-            });
-            roleBasedRedirect(res);
-          } else {
-            console.log("------>", res.data);
-            toast.error(res.data.errorMessage);
-          }
-        });
+      if (!expired) {
+        axios
+          .post(`${process.env.REACT_APP_API}/login`, { email, password })
+          .then((res) => {
+            if (res.data.success) {
+              dispatch({
+                type: "LOGGED_IN_USER",
+                payload: {
+                  name: res.data.name,
+                  email: res.data.email,
+                  token: res.data.token,
+                  role: res.data.role,
+                  _id: res.data._id,
+                },
+              });
+              roleBasedRedirect(res);
+            } else {
+              console.log("------>", res.data);
+              toast.error(res.data.errorMessage);
+            }
+          });
+      } else {
+        toast.error("recaptcha must be choosen!");
+      }
     } catch (error) {
       console.log("====>", error);
       toast.error(error.message);
@@ -94,13 +102,13 @@ const Login = ({ history }) => {
 
       <Button
         icon={<MailOutlined />}
-        onClick={handleSubmit}
         type="primary"
+        onClick={handleSubmit}
         block
         shape="round"
         className="mb-3"
         size="large"
-        disabled={!email || password.length < 6}
+        disabled={!email || password.length < 6 || expired}
       >
         Login with Email/Password
       </Button>
@@ -133,6 +141,24 @@ const Login = ({ history }) => {
     //   });
   };
 
+  const changeRecaptchaHandler = (value) => {
+    // console.log(value);
+
+    if (value !== null) {
+      axios
+        .post(`${process.env.REACT_APP_API}/recaptcha`, { secToken: value })
+        .then((res) => {
+          if (res.data.success) {
+            setExpired(false);
+            // console.log(res.data.msg);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  };
+
   return (
     <div className="container mt-5 pt-5" style={{ minHeight: "100vh" }}>
       <div className="row mt-4">
@@ -144,6 +170,12 @@ const Login = ({ history }) => {
               <h4>Login</h4>
             )}
             {loginForm}
+            <ReCAPTCHA
+              sitekey={SITE_KEY}
+              onChange={changeRecaptchaHandler}
+              style={{ display: "inline-block" }}
+              theme="dark"
+            />
             <Button
               icon={<GoogleOutlined />}
               onClick={googleLogin}

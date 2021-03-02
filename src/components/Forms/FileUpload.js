@@ -31,10 +31,10 @@ const FileUpload = ({ values, setValues, setLoading }) => {
               .post(
                 "http://localhost:8000/api/uploadimages",
                 { image: uri },
-                { headers: { authtoken: user ? user.token : "" } }
+                { headers: { authtoken: user ? `bearer ${user.token}` : "" } }
               )
               .then((res) => {
-                console.log(res);
+                // console.log(res);
                 setLoading(false);
                 allUploadedFiles.push(res.data);
                 setValues({ ...values, images: allUploadedFiles });

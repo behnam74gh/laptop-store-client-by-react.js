@@ -12,7 +12,6 @@ const SubUpdate = ({ match, history }) => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
   const [parent, setParent] = useState("");
-  const [selectedParent, setSelectedParent] = useState("");
 
   const { user } = useSelector((state) => ({ ...state }));
 
